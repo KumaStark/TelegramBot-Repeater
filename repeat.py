@@ -1,11 +1,18 @@
 import sys
 import unicodedata
 from collections import defaultdict
-
+import logging
 from telegram import Update
 from telegram.ext.callbackcontext import CallbackContext
 
 from lib import kuma_custom_check
+
+# Enable logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+
+logger = logging.getLogger(__name__)
 
 punctuations = "".join(
     list(
@@ -63,7 +70,8 @@ def repeat(update: Update, context: CallbackContext):
         context.bot.send_message(chat_id=chat_id, text=t, entities=e)
     # Do custom check and send reply
     custom_check_result = kuma_custom_check(t)
-    if len(custom_check_result) >0:
+    logger.info('custom_check_result: "%s"', custom_check_result)
+    if len(custom_check_result) > 0:
         repeated[chat_id] = True
         # repeat text in a group of quota
         return_text = (strip_punctuation(custom_check_result[0]) + "！") * 3
