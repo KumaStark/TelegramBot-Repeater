@@ -3,13 +3,19 @@
 
 import logging
 import os
-from telegram import Bot, Update, Message
-from telegram.ext.callbackcontext import CallbackContext
-from telegram.ext import (Updater, MessageHandler, Filters, CommandHandler,
-                          PicklePersistence)
-from repeat import repeat, clean_repeat
 
-token = os.getenv('TELEGRAM_APITOKEN')
+from telegram import Bot, Message, Update
+from telegram.ext import (CommandHandler, Filters, MessageHandler,
+                          PicklePersistence, Updater)
+from telegram.ext.callbackcontext import CallbackContext
+
+from lib import read_yaml_config
+from repeat import clean_repeat, repeat
+
+# token = os.getenv('TELEGRAM_APITOKEN')
+config_file = 'config.yaml' # 配置文件路径
+config = read_yaml_config(config_file)
+token = config["token"]
 bot = Bot(token=token)
 
 # Enable logging

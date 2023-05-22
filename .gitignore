@@ -1,4 +1,6 @@
 .idea
 .vscode
-venv
+.venv
+target
 __pycache__
+config.yaml
