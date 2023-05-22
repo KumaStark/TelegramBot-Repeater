@@ -68,14 +68,15 @@ def repeat(update: Update, context: CallbackContext):
         # repeat as follower
         repeated[chat_id] = True
         context.bot.send_message(chat_id=chat_id, text=t, entities=e)
-    # Do custom check and send reply
-    custom_check_result = kuma_custom_check(t)
-    logger.info('custom_check_result: "%s"', custom_check_result)
-    if len(custom_check_result) > 0:
-        repeated[chat_id] = True
-        # repeat text in a group of quota
-        return_text = (strip_punctuation(custom_check_result[0]) + "！") * 3
-        context.bot.send_message(chat_id=chat_id, text=return_text, entities=e)
+    else:
+        # Do custom check and send reply
+        custom_check_result = kuma_custom_check(t)
+        logger.info('custom_check_result: "%s"', custom_check_result)
+        if len(custom_check_result) > 0:
+            repeated[chat_id] = True
+            # repeat text in a group of quota
+            return_text = (strip_punctuation(custom_check_result[0]) + "！") * 3
+            context.bot.send_message(chat_id=chat_id, text=return_text, entities=e)
     last_sender[chat_id] = f
     if update.message.text != last_text[chat_id]:
         last_text[chat_id] = update.message.text
